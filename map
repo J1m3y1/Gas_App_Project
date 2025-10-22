@@ -1,0 +1,11 @@
+const pins = [
+  { lat: 30.4515, lng: -91.1871, label: "Baton Rouge" },
+  { lat: 29.9511, lng: -90.0715, label: "New Orleans" }
+];
+
+pins.forEach(pin => {
+  L.marker([pin.lat, pin.lng])
+    .addTo(map)
+    .bindPopup(pin.label);
+});
+
