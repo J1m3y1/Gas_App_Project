@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'screens/map_screen.dart';
+import 'screens/setting_screen.dart';
+import 'screens/search_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,59 +14,57 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Google Maps Test',
+      title: 'Gas Station App',
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue)),
-      home: const MapTestScreen(),
+      home: const MainNavigation(),
     );
   }
 }
 
-class MapTestScreen extends StatefulWidget {
-  const MapTestScreen({super.key});
+class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
 
   @override
-  State<MapTestScreen> createState() => _MapTestScreenState();
+  State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MapTestScreenState extends State<MapTestScreen> {
-  late GoogleMapController mapController;
+class _MainNavigationState extends State<MainNavigation> {
+  int myIndex = 0;
 
-  //Example coordinate (LSU campus)
-  final LatLng _center = const LatLng(30.4133, -91.1823);
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    final String style = '''
-    [
-      {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-          { "visibility": "off" }
-        ]
-      },
-      {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-          { "visibility": "off" }
-        ]
-      }
-    ]
-    ''';
-    mapController.setMapStyle(style);
-  }
+  final List<Widget> screens = [
+    const MapScreen(),
+    const SearchScreen(),
+    const SettingsPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Google Maps Test')), //change name to project 
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 14.0,
-        ),
+      body: IndexedStack(
+        index: myIndex,
+        children: screens,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            myIndex = index;
+          });
+        },
+        currentIndex: myIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
       ),
     );
   }
