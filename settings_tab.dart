@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'acknowledgments_page.dart';
+import 'feedback_page.dart';
+
+
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -93,13 +97,18 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Feedback'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FeedbackPage()),);
             }
           ),
           ListTile(
             title: const Text('Acknowledgments'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AcknowledgmentsPage()),);
 
             }
           ),
