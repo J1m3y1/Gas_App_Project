@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  final bool isDarkMode;
+  final VoidCallback toggleTheme;
+
+  const SettingsPage({
+    super.key,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool darkMode = false;
   bool notifications = false;
   String textSize = 'Medium';
   String language = 'English';
+  
+  bool localDarkMode = false;  
+  
+  @override
+  void initState() {
+    super.initState();
+    localDarkMode = !widget.isDarkMode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         children: [
-
           // Appearance Settings
           Text(
             'Appearance',
@@ -33,9 +46,13 @@ class _SettingsPageState extends State<SettingsPage> {
           SwitchListTile(
             title: const Text('Dark Mode'),
             secondary: const Icon(Icons.dark_mode),
-            value: darkMode,
-            onChanged: (value) {setState(() => darkMode = value);
-              }
+            value: localDarkMode,
+            onChanged: (value) {
+              setState(() {
+                localDarkMode = value;
+              });
+              widget.toggleTheme();
+            },
           ),
           const SizedBox(height: 8),
           Text('Text Size'),
@@ -43,28 +60,24 @@ class _SettingsPageState extends State<SettingsPage> {
             value: textSize,
             isExpanded: true,
             items: ['Small', 'Medium', 'Large']
-                .map((size) => DropdownMenuItem(value: size, child: Text(size),))
+                .map((size) => DropdownMenuItem(value: size, child: Text(size)))
                 .toList(),
             onChanged: (value) {
-              if (value != null) {setState(() => textSize = value);
-              }
-            }
+              if (value != null) setState(() => textSize = value);
+            },
           ),
-
           const SizedBox(height: 8),
           Text('Language'),
           DropdownButton<String>(
             value: language,
             isExpanded: true,
             items: ['English', 'Spanish', 'French']
-                .map((lang) => DropdownMenuItem(value: lang, child: Text(lang),))
+                .map((lang) => DropdownMenuItem(value: lang, child: Text(lang)))
                 .toList(),
             onChanged: (value) {
-              if (value != null) {setState(() => language = value);
-              }
-            }
+              if (value != null) setState(() => language = value);
+            },
           ),
-
           const SizedBox(height: 24),
 
           // Notification Settings
@@ -77,31 +90,25 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Enable Notifications'),
             secondary: const Icon(Icons.notifications),
             value: notifications,
-            onChanged: (value) {setState(() => notifications = value);
-            }
+            onChanged: (value) => setState(() => notifications = value),
           ),
           const SizedBox(height: 24),
           const Divider(),
 
           Text(
             'Support/About',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
 
-          // Feedback/Acknowledgments
           ListTile(
             title: const Text('Feedback'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-
-            }
+            onTap: () {},
           ),
           ListTile(
             title: const Text('Acknowledgments'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-
-            }
+            onTap: () {},
           ),
         ],
       ),
