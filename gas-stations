@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gas Stations in Baton Rouge</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([30.4515, -91.1871], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    const gasStations = [
+      { name: "RaceTrac - Harding Blvd", lat: 30.5235, lng: -91.1682 },
+      { name: "Fuel - Staring Ln", lat: 30.3786, lng: -91.1053 },
+      { name: "Fuel - Highland Rd", lat: 30.3789, lng: -91.1001 },
+      { name: "Mobil - Lee Dr", lat: 30.3902, lng: -91.1456 },
+      { name: "RaceTrac - Greenwell Springs", lat: 30.5051, lng: -91.0967 },
+      { name: "Murphy USA - S Wooddale Blvd", lat: 30.4512, lng: -91.0883 },
+      { name: "Murphy Express - Burbank Dr", lat: 30.3783, lng: -91.1037 },
+      { name: "Circle K - College Dr", lat: 30.4215, lng: -91.1342 },
+      { name: "Fuel - Jefferson Hwy", lat: 30.4269, lng: -91.0875 },
+      { name: "Costco Gasoline - Dawnadele Ave", lat: 30.4047, lng: -91.0532 },
+      { name: "Fuel - S Acadian Thruway", lat: 30.4321, lng: -91.1623 },
+      { name: "Shell - E State St", lat: 30.4132, lng: -91.1804 },
+      { name: "RaceTrac - Essen Ln", lat: 30.4035, lng: -91.0879 },
+      { name: "Fuel - Corporate Blvd", lat: 30.4325, lng: -91.0891 },
+      { name: "Valero - College Dr", lat: 30.4212, lng: -91.1357 },
+      { name: "Chevron - E Roosevelt St", lat: 30.4563, lng: -91.1702 },
+      { name: "Fuel - E Boyd Dr", lat: 30.4115, lng: -91.1774 },
+      { name: "Exxon - Essen Ln", lat: 30.4037, lng: -91.0881 }
+    ];
+
+    gasStations.forEach(station => {
+      L.marker([station.lat, station.lng])
+        .addTo(map)
+        .bindPopup(`<b>${station.name}</b>`);
+    });
+  </script>
+</body>
+</html>
