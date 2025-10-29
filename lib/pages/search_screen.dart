@@ -1,21 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gas_app_project/services/gas_station_services.dart';
-import 'package:gas_app_project/services/gas_filter_tab.dart';
-import 'package:gas_app_project/services/location_service.dart';
+import 'package:gas_app_project_dev/services/gas_station_services.dart';
+import 'package:gas_app_project_dev/services/gas_filter_tab.dart';
+import 'package:gas_app_project_dev/services/location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SearchScreenState extends State<SearchScreen> {
 
   final GasStationServices firestoreService = GasStationServices();
 

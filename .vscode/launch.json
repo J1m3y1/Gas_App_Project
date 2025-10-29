@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "gas_app_project",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "gas_app_project (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "gas_app_project (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

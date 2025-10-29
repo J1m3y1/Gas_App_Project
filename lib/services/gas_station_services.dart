@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import "package:cloud_firestore/cloud_firestore.dart";
-import 'package:gas_app_project/secrets.dart';
+import 'package:gas_app_project_dev/secrets.dart';
 
 
 class GasStationServices {
