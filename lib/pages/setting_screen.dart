@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gas_app_project_dev/pages/acknowledgments_page.dart';
+import 'package:gas_app_project_dev/pages/feedback_page.dart';
 
 class SettingsPage extends StatefulWidget {
   final bool isDarkMode;
@@ -101,6 +103,12 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Feedback'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FeedbackPage(),
+                ),
+              );
 
             }
           ),
@@ -108,7 +116,12 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Acknowledgments'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AcknowledgmentsPage(),
+                ),
+              );
             }
           ),
         ],
