@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  final bool isDarkMode;
+  final VoidCallback toggleTheme;
+
+  const SettingsPage({ super.key, required this.toggleTheme, required this.isDarkMode,});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool darkMode = false;
+  bool localdarkMode = false;
   bool notifications = false;
   String textSize = 'Medium';
   String language = 'English';
+
+  @override void initState() {
+    super.initState();
+    localdarkMode = !widget.isDarkMode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +41,12 @@ class _SettingsPageState extends State<SettingsPage> {
           SwitchListTile(
             title: const Text('Dark Mode'),
             secondary: const Icon(Icons.dark_mode),
-            value: darkMode,
-            onChanged: (value) {setState(() => darkMode = value);
-              }
+            value: localdarkMode,
+            onChanged: (value) {setState(() { 
+              localdarkMode = value;
+              });
+              widget.toggleTheme();
+  },
           ),
           const SizedBox(height: 8),
           Text('Text Size'),
@@ -43,11 +54,10 @@ class _SettingsPageState extends State<SettingsPage> {
             value: textSize,
             isExpanded: true,
             items: ['Small', 'Medium', 'Large']
-                .map((size) => DropdownMenuItem(value: size, child: Text(size),))
+                .map((size) => DropdownMenuItem(value: size, child: Text(size)))
                 .toList(),
             onChanged: (value) {
-              if (value != null) {setState(() => textSize = value);
-              }
+              if (value != null) setState(() => textSize = value);
             }
           ),
 
@@ -57,11 +67,10 @@ class _SettingsPageState extends State<SettingsPage> {
             value: language,
             isExpanded: true,
             items: ['English', 'Spanish', 'French']
-                .map((lang) => DropdownMenuItem(value: lang, child: Text(lang),))
+                .map((lang) => DropdownMenuItem(value: lang, child: Text(lang)))
                 .toList(),
             onChanged: (value) {
-              if (value != null) {setState(() => language = value);
-              }
+              if (value != null) setState(() => language = value);
             }
           ),
 
@@ -77,8 +86,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Enable Notifications'),
             secondary: const Icon(Icons.notifications),
             value: notifications,
-            onChanged: (value) {setState(() => notifications = value);
-            }
+            onChanged: (value) => setState(() => notifications = value),
           ),
           const SizedBox(height: 24),
           const Divider(),
