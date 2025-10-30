@@ -1,50 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Gas Stations in Baton Rouge</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <style>
-    #map { height: 100vh; }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([30.4515, -91.1871], 13);
+#include <QApplication>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QGraphicsEllipseItem>
+#include <QGraphicsTextItem>
+#include <vector>
+#include <string>
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+struct GasStation {
+    std::string name;
+    double lat;
+    double lng;
+};
 
-    const gasStations = [
-      { name: "RaceTrac - Harding Blvd", lat: 30.5235, lng: -91.1682 },
-      { name: "Fuel - Staring Ln", lat: 30.3786, lng: -91.1053 },
-      { name: "Fuel - Highland Rd", lat: 30.3789, lng: -91.1001 },
-      { name: "Mobil - Lee Dr", lat: 30.3902, lng: -91.1456 },
-      { name: "RaceTrac - Greenwell Springs", lat: 30.5051, lng: -91.0967 },
-      { name: "Murphy USA - S Wooddale Blvd", lat: 30.4512, lng: -91.0883 },
-      { name: "Murphy Express - Burbank Dr", lat: 30.3783, lng: -91.1037 },
-      { name: "Circle K - College Dr", lat: 30.4215, lng: -91.1342 },
-      { name: "Fuel - Jefferson Hwy", lat: 30.4269, lng: -91.0875 },
-      { name: "Costco Gasoline - Dawnadele Ave", lat: 30.4047, lng: -91.0532 },
-      { name: "Fuel - S Acadian Thruway", lat: 30.4321, lng: -91.1623 },
-      { name: "Shell - E State St", lat: 30.4132, lng: -91.1804 },
-      { name: "RaceTrac - Essen Ln", lat: 30.4035, lng: -91.0879 },
-      { name: "Fuel - Corporate Blvd", lat: 30.4325, lng: -91.0891 },
-      { name: "Valero - College Dr", lat: 30.4212, lng: -91.1357 },
-      { name: "Chevron - E Roosevelt St", lat: 30.4563, lng: -91.1702 },
-      { name: "Fuel - E Boyd Dr", lat: 30.4115, lng: -91.1774 },
-      { name: "Exxon - Essen Ln", lat: 30.4037, lng: -91.0881 }
-    ];
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
 
-    gasStations.forEach(station => {
-      L.marker([station.lat, station.lng])
-        .addTo(map)
-        .bindPopup(`<b>${station.name}</b>`);
-    });
-  </script>
-</body>
-</html>
+    QGraphicsScene scene;
+    QGraphicsView view(&scene);
+    view.setWindowTitle("Gas Stations in Baton Rouge");
+    view.setFixedSize(800, 600);
+    scene.setSceneRect(0, 0, 800, 600);
+
+    // Simulated coordinate scaling
+    auto scaleLat = [](double lat) { return (lat - 30.35) * 10000; };
+    auto scaleLng = [](double lng) { return (lng + 91.25) * 10000; };
+
+    std::vector<GasStation> stations = {
+        {"RaceTrac - Harding Blvd", 30.5235, -91.1682},
+        {"Fuel - Staring Ln", 30.3786, -91.1053},
+        {"Mobil - Lee Dr", 30.3902, -91.1456},
+        {"Murphy USA - S Wooddale Blvd", 30.4512, -91.0883},
+        {"Circle K - College Dr", 30.4215, -91.1342},
+        {"Shell - E State St", 30.4132, -91.1804},
+        {"Chevron - E Roosevelt St", 30.4563, -91.1702}
+    };
+
+    for (const auto& station : stations) {
+        double x = scaleLng(station.lng);
+        double y = scaleLat(station.lat);
+
+        QGraphicsEllipseItem* pin = scene.addEllipse(x, y, 10, 10, QPen(Qt::red), QBrush(Qt::red));
+        QGraphicsTextItem* label = scene.addText(QString::fromStdString(station.name));
+        label->setPos(x + 12, y - 5);
+    }
+
+    view.show();
+    return app.exec();
+}
