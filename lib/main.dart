@@ -59,7 +59,7 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     final screens = [
     MapScreen(isDarkMode: widget.isDarkMode),
-    SearchScreen(),
+    SearchScreen(isDarkMode: widget.isDarkMode,),
     SettingsPage(toggleTheme: widget.toggleTheme, isDarkMode: true,),
   ];
 

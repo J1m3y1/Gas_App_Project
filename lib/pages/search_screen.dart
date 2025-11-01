@@ -10,7 +10,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  final bool isDarkMode;
+  const SearchScreen({super.key, required this.isDarkMode});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -186,7 +187,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   hintText: "Search",
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: widget.isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFF7F7F7),
                   contentPadding: EdgeInsets.all(15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
