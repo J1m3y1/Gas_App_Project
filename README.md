@@ -9,7 +9,7 @@ Mobile app to track cheapest gas prices nearby
    - Enable the **Maps SDK for Android**.
    - Enable the **Places API**.
 <br>copy paste MAPS_API_KEY= "Your Google Map API Key" under gas_station_app > android > local.properties with a google map api
-<br>copy paste API_KEY= "Your Places API Key" under gas_station_app > android > local.properties with a places api
+<br>copy paste API_KEY= "Your Places API Key" in a file you create called secrets.dart
 
    
    
