@@ -10,6 +10,12 @@ Mobile app to track cheapest gas prices nearby
    - Enable the **Places API**.
 <br>copy paste MAPS_API_KEY= "Your Google Map API Key" under gas_station_app > android > local.properties with a google map api
 <br>copy paste API_KEY= "Your Places API Key" in a file you create called secrets.dart
+4.In VsCode Terminal
+    -run "flutter pub get" in the project root
+    -run "flutter run" while your android emulator is open
+5. Emulator Setting
+    -location must set to 29.9517871, -90.1796284
+
 
    
    
