@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gas_app_project_dev/services/gas_station.dart';
+import 'package:gas_app_project_dev/services/globals.dart';
 import 'package:gas_app_project_dev/services/location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,7 +29,16 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     getUserLocation();
     _fetchGasStations();
+
+    isDarkModeNotifier.addListener(_updateMapStyle);
   }
+
+  void _updateMapStyle() {
+  if (mapController != null && mounted) {
+    _setMapStyle();
+    setState(() {}); // refresh sheet colors
+  }
+}
 
   Future<void> _fetchGasStations() async {
   try {
@@ -60,9 +70,9 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _setMapStyle() async {
-    String stylePath = widget.isDarkMode?'assets/map_styles/dark_map.json':'assets/map_styles/light_map.json';
+    final isDark = isDarkModeNotifier.value; 
+    String stylePath = isDark? 'assets/map_styles/dark_map.json':'assets/map_styles/light_map.json';
     final String mapStyle = await rootBundle.loadString(stylePath);
-    // ignore: deprecated_member_use
     mapController?.setMapStyle(mapStyle);
   }
 
@@ -110,17 +120,9 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  
-
-  @override void didUpdateWidget(covariant MapScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if(oldWidget.isDarkMode != widget.isDarkMode){
-      _setMapStyle();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkModeNotifier.value;
     if (_userPosition == null) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -175,7 +177,7 @@ class _MapScreenState extends State<MapScreen> {
 
                 return Container(
                   decoration: BoxDecoration(
-                    color: widget.isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFF7F7F7),
+                    color: isDark? const Color(0xFF1E1E1E) : const Color(0xFFF7F7F7),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),

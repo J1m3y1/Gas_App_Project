@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gas_app_project_dev/pages/acknowledgments_page.dart';
 import 'package:gas_app_project_dev/pages/feedback_page.dart';
+import 'package:gas_app_project_dev/pages/signup_login_page.dart';
+import 'package:gas_app_project_dev/services/auth.dart';
+import 'package:gas_app_project_dev/services/globals.dart';
 
 class SettingsPage extends StatefulWidget {
-  final bool isDarkMode;
-  final VoidCallback toggleTheme;
-
-  const SettingsPage({ super.key, required this.toggleTheme, required this.isDarkMode,});
+  const SettingsPage({ super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool localdarkMode = false;
-  bool notifications = false;
   String textSize = 'Medium';
-  String language = 'English';
-
-  @override void initState() {
-    super.initState();
-    localdarkMode = !widget.isDarkMode;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +32,18 @@ class _SettingsPageState extends State<SettingsPage> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
-          SwitchListTile(
+          ValueListenableBuilder<bool>(
+            valueListenable: isDarkModeNotifier,
+            builder: (context, value, _) {
+          return SwitchListTile(
             title: const Text('Dark Mode'),
             secondary: const Icon(Icons.dark_mode),
-            value: localdarkMode,
-            onChanged: (value) {setState(() { 
-              localdarkMode = value;
-              });
-              widget.toggleTheme();
+            value: value,
+            onChanged: (newValue) {
+              isDarkModeNotifier.value = newValue;
   },
+          );
+            },
           ),
           const SizedBox(height: 8),
           Text('Text Size'),
@@ -63,35 +58,8 @@ class _SettingsPageState extends State<SettingsPage> {
             }
           ),
 
-          const SizedBox(height: 8),
-          Text('Language'),
-          DropdownButton<String>(
-            value: language,
-            isExpanded: true,
-            items: ['English', 'Spanish', 'French']
-                .map((lang) => DropdownMenuItem(value: lang, child: Text(lang)))
-                .toList(),
-            onChanged: (value) {
-              if (value != null) setState(() => language = value);
-            }
-          ),
 
           const SizedBox(height: 24),
-
-          // Notification Settings
-          Text(
-            'Notifications',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 8),
-          SwitchListTile(
-            title: const Text('Enable Notifications'),
-            secondary: const Icon(Icons.notifications),
-            value: notifications,
-            onChanged: (value) => setState(() => notifications = value),
-          ),
-          const SizedBox(height: 24),
-          const Divider(),
 
           Text(
             'Support/About',
@@ -100,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // Feedback/Acknowledgments
           ListTile(
-            title: const Text('Feedback'),
+            title: const Text('Apply To contribute'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
               Navigator.push(
@@ -124,6 +92,26 @@ class _SettingsPageState extends State<SettingsPage> {
               );
             }
           ),
+          ListTile(
+            title:  const Text('Sign Out'),
+            onTap: () async{
+              try {
+                await Auth().signOut();
+
+                if(mounted){
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginPage()),
+                    (route) => false,
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Failed to sign out. Try again.'))
+                );
+              }
+            },
+          )
         ],
       ),
     );
